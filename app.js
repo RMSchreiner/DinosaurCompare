@@ -72,13 +72,13 @@ const human = {
 var user = (function(){
 return {
     getUser: function(human){
-              console.log(document.getElementById("name").value);
              human.name =  document.getElementById("name").value;
              human.heightFeet = document.getElementById("feet").value;
              human.heightInches = document.getElementById("inches").value;
              human.humanWeight = document.getElementById("weight").value;
              human.humanDiet = document.getElementById("diet").value; 
-             return human;  
+             //console.log(human);
+             human;  
     }
 }
 })();
@@ -101,9 +101,13 @@ return {
 // Remove form from screen
 
 // // On button click, prepare and display infographic
+//event listener has the event "click" then the listener which is the user.getUser function
 
-console.log(document.getElementById("btn").addEventListener("click",user.getUser));
+let humanObject = document.getElementById("btn").addEventListener("click",user.getUser);
 
+
+
+//console.log(user.getUser);
 
 // wait dinosData complete
 
