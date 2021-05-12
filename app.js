@@ -29,12 +29,10 @@ const getDinoData = () => {
     })
     .then((data) => {
       data.Dinos.map((dino) => {
-        console.log(dino);
         let dinoArray = constructDinoArray(
           dino.species,
           dino.weight,
           dino.height,
-          dino.diet,
           dino.diet,
           dino.where,
           dino.when,
@@ -49,13 +47,12 @@ const getDinoData = () => {
     });
 };
 
-function getDinopData (){
-let dinoObject;
-dinoObject = getDinoData();
-console.log(dinoObject);
-return dinoObject;}
+// function getDinopData (){
+// let dinoObject;
+// dinoObject = getDinoData();
+// return dinoObject};
 
-console.log(getDinoData());
+
 
 // Create Human Object
 
@@ -66,32 +63,43 @@ const human = {
     humanWeight: "175",
     humanDiet:"omnivorous"
 };
+console.log(human);
 
 // Use IIFE to get human data from form
 //possible add some error messaging in here
-var user = (function(){
-return {
-    getUser: function(human){
+function createHuman(){(function(){ try{
              human.name =  document.getElementById("name").value;
              human.heightFeet = document.getElementById("feet").value;
              human.heightInches = document.getElementById("inches").value;
              human.humanWeight = document.getElementById("weight").value;
              human.humanDiet = document.getElementById("diet").value; 
-             //console.log(human);
-             human;  
-    }
-}
+             console.log(human);
+             return human;}
+             catch (error){
+               console.log("Please Try Again");
+             }
 })();
+};
 
 
 
-// Create Dino Compare Method 1
-// NOTE: Weight in JSON file is in lbs, height in inches.
+// Create Dino Compare Method 1,2,3
 
-// Create Dino Compare Method 2
-// NOTE: Weight in JSON file is in lbs, height in inches.
+//Would this dinosaur eat you?
+function dinoFacts(){(function(){
+  function humanScale(human,dinoArray)
+         
 
-// Create Dino Compare Method 3
+
+
+
+
+})();
+};
+
+
+
+
 // NOTE: Weight in JSON file is in lbs, height in inches.
 
 // Generate Tiles for each Dino in Array
@@ -100,15 +108,34 @@ return {
 
 // Remove form from screen
 
+function removeForm(){
+  var form = document.getElementById("dino-compare");
+  form.remove();
+};
+
+
 // // On button click, prepare and display infographic
-//event listener has the event "click" then the listener which is the user.getUser function
 
-let humanObject = document.getElementById("btn").addEventListener("click",user.getUser);
+//event listener runs all the following functions. 
+// document.getElementById('btn').addEventListener('click', () => {
+//   hideForm();
+//   getHumanData();
+//   randomArray();
+//   displayGrid();
+//   displayTiles();
+// });
 
+document.getElementById("btn").addEventListener("click",function(){
+  createHuman();
+  removeForm();
+  console.log(getDinoData()); //dino data on multiple click gets added to array
+  
 
-
-//console.log(user.getUser);
+});
 
 // wait dinosData complete
 
 // do something with dinos
+
+
+
