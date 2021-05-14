@@ -54,9 +54,9 @@ const human = {
 // Use IIFE to get human data from form
 function createHuman(){(function(){ try{
              human.name =  document.getElementById("name").value;
-             human.heightFeet = document.getElementById("feet").value;
-             human.heightInches = document.getElementById("inches").value;
-             human.humanWeight = document.getElementById("weight").value;
+             human.heightFeet = parseInt(document.getElementById("feet").value);
+             human.heightInches = parseInt(document.getElementById("inches").value);
+             human.humanWeight = praseInt(document.getElementById("weight").value);
              human.humanDiet = document.getElementById("diet").value; 
              console.log(human);
              return human;}
@@ -85,24 +85,29 @@ function dinoFacts(human,dinos){
   //and sets to three different variables which are passed to functions
   //compared to human and then pushed to array  
 function factEdit(human, dinoData){
-  var s = 0;
-  var e = 0;
-  var w = 0; //same random number...
+  let s = -1;
+  let e = -1;
+  let w = -1; //same random number...
   for(let i =0; i < 3 ; i ++){ 
     do{
-    s = Math.floor(Math.random() * dinoData.length + 1);
-    }while(s === 0);
+    s = Math.floor(Math.random() * dinoData.length);
+    }while(s === -1);
+    console.log(s);
+
     do{
-    e = Math.floor(Math.random() * dinoData.length + 1);
-    }while(e !== s && e !== 0);
+    e = Math.floor(Math.random() * dinoData.length);
+    }while(e === s || e === -1);
+    console.log(e);
+    
     do{
-    w = Math.floor(Math.random() * dinoData.length + 1);
-    }while(w !== s && w!== e && w !== 0);
+    w = Math.floor(Math.random() * dinoData.length);
+    }while(w === s || w=== e || w === -1);
+    console.log(w);
   };
   console.log(s,e,w);
   compareScale(human,dinoData[s]);
   eatHuman(dinoData[e]);
-  //dinoSwim(dinoData[w]);
+  dinoSwim(dinoData[w]);
   console.log(dinoData);
    //keep adding functions test if it changes the fields 
   //push bird to random position
@@ -116,10 +121,13 @@ function factEdit(human, dinoData){
 // dino compare 1of3 compare scale of dino to human
 function compareScale(human,scaleDino){
 let humanInches = human.heightFeet * 12;
+console.log("humanInches"+humanInches);
 humanInches = humanInches + human.heightInches;
-let scale = scaleDino.height/humanInches;
+console.log(humanInches);
+console.log(human.heightInches);
+let scale = Math.round(((scaleDino.height/humanInches)*10)/10);
 console.log(scale);
-scaleDino.fact = "The dinosaurs model scale to that of the human is" + scale;
+scaleDino.fact = "The dinosaurs model scale to that of the human is 1:" + scale;
 return;
 }
 
