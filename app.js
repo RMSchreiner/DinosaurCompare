@@ -48,7 +48,7 @@ const human = {
   heightFeet: "5",
   heightInches: "5",
   humanWeight: "175",
-  humanDiet:"omnivorous"
+  humanDiet:"omnivorous",
 };
 
 // Use IIFE to get human data from form
@@ -69,37 +69,20 @@ function createHuman(){(function(){ try{
 
 
 //rebuilding compare function against the directions below
-function dinoFacts(human,dinos){
+function dinoFacts(){
   let dinoFact = [];
-  let newArray = []
   let bird = new Dinosaur();
   bird = dinos.slice(dinos.length - 1); 
   console.log(bird[0]);
   //took dinoFact function out array returning blank
   dinoFact = dinos.splice(0,dinos.length - 1);
   console.log(dinoFact);
-  console.log(factEdit(human, dinoFact));
-  console.log(dinoFact.splice((Math.random()*dinoFact.length),0,bird[0]));
-    return newArray;
+  factEdit(human, dinoFact);
+  dinoFact.splice((Math.random()*dinoFact.length),0,bird[0]);
+
+    return dinoFact;
 };
 
-// //spliced bird 
-// function birdOff(bird,dinos){
-//   bird = dinos.slice(dinos.length - 1); 
-//   console.log(bird[0]);
-//   return bird;
-// };
-
-//bird added to array at random position, was not able to get dinoArray with objects sent back up a scope
-// function birdOn(bird,dinoFact) {
-//   //splice annotation is incorrect []
-// let newArray = dinoFact.splice((Math.random()*dinoFact.length),0,bird);
-// console.log(newArray);
-// return;
-//};
-  //for loop that identifies 3 random numbers out of the array length 
-  //and sets to three different variables which are passed to functions
-  //compared to human and then pushed to array  
 function factEdit(human, dinoData){
   let s = -1;
   let e = -1;
@@ -120,19 +103,13 @@ function factEdit(human, dinoData){
   eatHuman(dinoData[e]);
   dinoSwim(dinoData[w]);
   return dinoData;
-};
-  //push bird to random position
-  //splice human at midpoint
-  //this should create the proper ordered tiles randomized with facts  
-
+}; 
 
 // dino compare 1of3 compare scale of dino to human
 function compareScale(human,scaleDino){
-let humanInches = parseInt(human.heightFeet) * 12;
-console.log("humanInches"+humanInches);
-humanInches = humanInches + parseInt(human.heightInches);
-let scale = Math.round(((scaleDino.height/humanInches)*10)/10);
-scaleDino.fact = "The dinosaurs model scale to that of the human is 1:" + scale;
+let humanWeight = parseInt(human.humanWeight);
+let scale = Math.round(((scaleDino.weight/humanWeight)*10)/10);
+scaleDino.fact = "The dinosaurs model scale to that of the human based upon weight is 1:" + scale;
 return;
 }
 
@@ -149,8 +126,6 @@ function dinoSwim(dinoSwim){
   else{dinoSwim.fact = "It is likely that you could evade this dinosaur by swimming"};
   return;
 }
-
-// NOTE: Weight in JSON file is in lbs, height in inches.
 
 // Generate Tiles for each Dino in Array
 
@@ -175,8 +150,8 @@ function removeForm(){
 
 //onclick event (be aware of the order of functions)
 document.getElementById("btn").addEventListener("click",function(){
-  createHuman();
   removeForm();
+  createHuman();
   dinoFacts(human,dinos);
 
   //dinoFacts();
