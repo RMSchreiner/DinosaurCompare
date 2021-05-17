@@ -54,9 +54,10 @@ const human = {
 // Use IIFE to get human data from form
 function createHuman(){(function(){ try{
              human.name =  document.getElementById("name").value;
-             human.heightFeet = parseInt(document.getElementById("feet").value);
-             human.heightInches = parseInt(document.getElementById("inches").value);
-             human.humanWeight = praseInt(document.getElementById("weight").value);
+             //parseInt was causing the form to fail
+             human.heightFeet = document.getElementById("feet").value;
+             human.heightInches = document.getElementById("inches").value;
+             human.humanWeight = document.getElementById("weight").value;
              human.humanDiet = document.getElementById("diet").value; 
              console.log(human);
              return human;}
@@ -69,18 +70,33 @@ function createHuman(){(function(){ try{
 
 //rebuilding compare function against the directions below
 function dinoFacts(human,dinos){
-
+  let dinoFact = [];
+  let newArray = []
   let bird = new Dinosaur();
   bird = dinos.slice(dinos.length - 1); 
   console.log(bird[0]);
-  let dinoFact = [];
-  dinoFact = dinos.splice(0,dinos.length -1);
+  //took dinoFact function out array returning blank
+  dinoFact = dinos.splice(0,dinos.length - 1);
   console.log(dinoFact);
-  factEdit(human, dinoFact);
-
-
-
+  console.log(factEdit(human, dinoFact));
+  console.log(dinoFact.splice((Math.random()*dinoFact.length),0,bird[0]));
+    return newArray;
 };
+
+// //spliced bird 
+// function birdOff(bird,dinos){
+//   bird = dinos.slice(dinos.length - 1); 
+//   console.log(bird[0]);
+//   return bird;
+// };
+
+//bird added to array at random position, was not able to get dinoArray with objects sent back up a scope
+// function birdOn(bird,dinoFact) {
+//   //splice annotation is incorrect []
+// let newArray = dinoFact.splice((Math.random()*dinoFact.length),0,bird);
+// console.log(newArray);
+// return;
+//};
   //for loop that identifies 3 random numbers out of the array length 
   //and sets to three different variables which are passed to functions
   //compared to human and then pushed to array  
@@ -92,48 +108,37 @@ function factEdit(human, dinoData){
     do{
     s = Math.floor(Math.random() * dinoData.length);
     }while(s === -1);
-    console.log(s);
-
     do{
     e = Math.floor(Math.random() * dinoData.length);
     }while(e === s || e === -1);
-    console.log(e);
-    
     do{
     w = Math.floor(Math.random() * dinoData.length);
     }while(w === s || w=== e || w === -1);
-    console.log(w);
   };
   console.log(s,e,w);
   compareScale(human,dinoData[s]);
   eatHuman(dinoData[e]);
   dinoSwim(dinoData[w]);
-  console.log(dinoData);
-   //keep adding functions test if it changes the fields 
+  return dinoData;
+};
   //push bird to random position
   //splice human at midpoint
   //this should create the proper ordered tiles randomized with facts  
-  return;
-}
-
 
 
 // dino compare 1of3 compare scale of dino to human
 function compareScale(human,scaleDino){
-let humanInches = human.heightFeet * 12;
+let humanInches = parseInt(human.heightFeet) * 12;
 console.log("humanInches"+humanInches);
-humanInches = humanInches + human.heightInches;
-console.log(humanInches);
-console.log(human.heightInches);
+humanInches = humanInches + parseInt(human.heightInches);
 let scale = Math.round(((scaleDino.height/humanInches)*10)/10);
-console.log(scale);
 scaleDino.fact = "The dinosaurs model scale to that of the human is 1:" + scale;
 return;
 }
 
 //dino compare 2of3 does the dino eat people
 function eatHuman(eatDino){
-  if(eatDino.diet === "carnivor"){eatDino.fact = "Beware, this dinosaur would eat you."}
+  if(eatDino.diet === "carnivor"){eatDino.fact = "Beware, this dinosaur would eat you or an unsupervised companion animal."}
   else{eatDino.fact = "This dinosaur although large, would not eat you. "}
   return;
 }
