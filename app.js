@@ -1,7 +1,7 @@
 
 
 // Create Dino Constructor
-function Dinosaur(species, weight, height, diet, where, when, fact) {
+function Dinosaur(species, weight, height, diet, where, when, fact, img) {
   this.species = species;
   this.weight = weight;
   this.height = height;
@@ -9,6 +9,8 @@ function Dinosaur(species, weight, height, diet, where, when, fact) {
   this.where = where;
   this.when = when;
   this.fact = fact;
+  this.img = img;
+  ///images/anklyosaurus.png
 }
 // Create Dino Objec
 const getDinoData = async () => {
@@ -31,7 +33,9 @@ window.onload = async function(){
           item.diet,
           item.where,
           item.when,
-          item.fact);
+          item.fact,
+          item.img = "/images/"+item.species+".png")
+
         dinos.push(dino);
     });
     readDinos();
@@ -49,6 +53,7 @@ const human = {
   heightInches: "5",
   humanWeight: "175",
   humanDiet:"omnivorous",
+  humanImg: "/images/human.png"
 };
 
 // Use IIFE to get human data from form
@@ -62,7 +67,7 @@ function createHuman(){(function(){ try{
              console.log(human);
              return human;}
              catch (error){
-             console.log("Please Try Again");
+             console.log(error,"Please Try Again");
              }
 })();
 };
@@ -150,8 +155,8 @@ function removeForm(){
 
 //onclick event (be aware of the order of functions)
 document.getElementById("btn").addEventListener("click",function(){
-  removeForm();
   createHuman();
+  removeForm();
   dinoFacts(human,dinos);
 
   //dinoFacts();
