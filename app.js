@@ -34,8 +34,7 @@ window.onload = async function(){
           item.where,
           item.when,
           item.fact,
-          item.img = "/images/"+item.species+".png")
-
+          item.img = `/images/${item.species}.png`)
         dinos.push(dino);
     });
     readDinos();
@@ -47,25 +46,23 @@ function readDinos(){
 }
 
 // Create Human Object
-const human = {
-  name: "cro magnum",
-  heightFeet: "5",
-  heightInches: "5",
-  humanWeight: "175",
-  humanDiet:"omnivorous",
-  humanImg: "/images/human.png"
-};
+let humanArray = [];
+let dinoFact = [];
+
 
 // Use IIFE to get human data from form
 function createHuman(){(function(){ try{
-             human.name =  document.getElementById("name").value;
-             //parseInt was causing the form to fail
-             human.heightFeet = document.getElementById("feet").value;
-             human.heightInches = document.getElementById("inches").value;
-             human.humanWeight = document.getElementById("weight").value;
-             human.humanDiet = document.getElementById("diet").value; 
-             console.log(human);
-             return human;}
+            let human = new Dinosaur();
+             human.species =  document.getElementById("name").value;
+             human.height = (document.getElementById("feet").value * 12)
+                            + document.getElementById("inches").value;
+             human.weight = document.getElementById("weight").value;
+             human.diet =   document.getElementById("diet").value; 
+             human.img = "/images/human.png";
+             human.fact = "Human";
+             humanArray.push(human);
+             console.log(humanArray[0]);
+             return humanArray;}
              catch (error){
              console.log(error,"Please Try Again");
              }
@@ -74,21 +71,23 @@ function createHuman(){(function(){ try{
 
 
 //rebuilding compare function against the directions below
-function dinoFacts(){
-  let dinoFact = [];
+function dinoFacts(humanArray){
+
+ 
   let bird = new Dinosaur();
   bird = dinos.slice(dinos.length - 1); 
   console.log(bird[0]);
   //took dinoFact function out array returning blank
   dinoFact = dinos.splice(0,dinos.length - 1);
-  console.log(dinoFact);
-  factEdit(human, dinoFact);
+  factEdit(humanArray, dinoFact);
   dinoFact.splice((Math.random()*dinoFact.length),0,bird[0]);
+  dinoFact.splice(4,0,humanArray[0]);
+  console.log(dinoFact);
 
     return dinoFact;
 };
 
-function factEdit(human, dinoData){
+function factEdit(humanArray, dinoData){
   let s = -1;
   let e = -1;
   let w = -1; //same random number...
@@ -104,15 +103,15 @@ function factEdit(human, dinoData){
     }while(w === s || w=== e || w === -1);
   };
   console.log(s,e,w);
-  compareScale(human,dinoData[s]);
+  compareScale(humanArray,dinoData[s]);
   eatHuman(dinoData[e]);
   dinoSwim(dinoData[w]);
   return dinoData;
 }; 
 
 // dino compare 1of3 compare scale of dino to human
-function compareScale(human,scaleDino){
-let humanWeight = parseInt(human.humanWeight);
+function compareScale(humanArray,scaleDino){
+let humanWeight = parseInt(humanArray[0].weight);
 let scale = Math.round(((scaleDino.weight/humanWeight)*10)/10);
 scaleDino.fact = "The dinosaurs model scale to that of the human based upon weight is 1:" + scale;
 return;
@@ -138,9 +137,26 @@ function dinoSwim(dinoSwim){
 
 // Remove form from screen
 function removeForm(){
-  var form = document.getElementById("dino-compare");
-  form.remove();
-};
+  document.getElementById("dino-compare").remove();
+  dinoFact.forEach(gridAppend);
+  console.log(dinoFact[0].weight);
+  function gridAppend(item){
+    console.log(item)
+    if(item.species === "Tyrannosaurus Rex"){item.img = "/images/Tyrannosaurus-Rex.png"};
+    let grid = document.getElementById("grid");
+    const newDiv = document.createElement('div');
+    newDiv.classList.add("grid-item");
+    newDiv.innerHTML = `<h3>${item.species}</h3><img src=${item.img} alt =" image of ${item.species}"><p>${item.fact}</p>`;
+                        grid.appendChild(newDiv);  
+  }
+                          
+  };
+
+function addGrid(){
+  console.log(dinoFact.length)
+  document.getElementById("grid").innerHTML="<divclass ='grid-item'>"+dinoFact[0].species+"</div>"
+  document.getElementById("grid").innerHTML="<divclass ='grid-item'>"+dinoFact[1].species+"</div>"
+  }
 
 // // On button click, prepare and display infographic
 
@@ -156,9 +172,8 @@ function removeForm(){
 //onclick event (be aware of the order of functions)
 document.getElementById("btn").addEventListener("click",function(){
   createHuman();
+  dinoFacts(humanArray);
   removeForm();
-  dinoFacts(human,dinos);
-
   //dinoFacts();
 
 });
